@@ -4,10 +4,14 @@
     box-sizing: border-box;
 }
 
-body{
+html, body {
     background-color: rgb(16, 2, 43);
     width: 100vw;
+}
+
+body{
     min-height: 100vh;
+    color: rgb(255, 255, 133);
 
     display: flex;
     justify-content: center;
@@ -17,7 +21,11 @@ body{
 }
 
 .conteúdo{
-    min-width: 600px;
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+    gap: 1.5rem;
+    max-width: 600px;
     padding: 1.5rem;
 }
 
@@ -26,7 +34,7 @@ body{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.1rem;
 }
 
 .titulo {
@@ -49,4 +57,6 @@ body{
     font-size: 2rem;
     font-weight: bold;
     padding: 0.2rem;
+    border-radius: 0.2rem;
+    margin-top: 0.3rem;
 }

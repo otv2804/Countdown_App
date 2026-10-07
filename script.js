@@ -1,133 +1,98 @@
-
 const input = document.getElementById("date_Input")
 const output = document.getElementById("output")
 
-const um_Segundo = 1000
-const um_Minuto = um_Segundo * 60
-const uma_Hora = um_Minuto * 60
-const um_Dia = uma_Hora * 24
-const um_Mês = um_Dia * 30
-const um_Ano = um_Dia * 12
+const ONE_SECOND = 1000
+const ONE_MINUTE = ONE_SECOND * 60
+const ONE_HOUR = ONE_MINUTE * 60
+const ONE_DAY = ONE_HOUR * 24
+const ONE_MONTH = ONE_DAY * 30
+const ONE_YEAR = ONE_MONTH * 12
 
-
-function calculateRemainingTime(dataReferencia, dataHoje) {
+function calculateRemainingTime(referenceDate, todayDate) {
     
-    let tempoFalta = dataReferencia - dataHoje
+    let timeLeft = referenceDate - todayDate
 
-
-    let anosFalta = 0    
-    while(tempoFalta > um_Ano){
-        um_Ano++
-        tempoFalta -= um_Ano
+    let yearsLeft = 0
+    while (timeLeft > ONE_YEAR) {
+        yearsLeft++
+        timeLeft -= ONE_YEAR
     }
 
-    let mesesFalta = 0 
-    while(tempoFalta > um_Mês) {
-        mesesFalta++
-        tempoFalta -= um_Mês
-} 
-
-    let diasFalta = 0 
-    while(tempoFalta > um_Dia) {
-        diasFalta++
-        tempoFalta -= um_Dia
-} 
-
-    let horasFalta = 0 
-    while(tempoFalta > uma_Hora) {
-        horasFalta++
-        tempoFalta -= uma_Hora
-} 
-
-    let minutosFalta = 0 
-    while(tempoFalta > um_Minuto) {
-        minutosFalta++
-        tempoFalta -= um_Minuto
-} 
-
-    let segundosFalta = 0 
-    while(tempoFalta > um_Segundo) {
-        segundosFalta++
-        tempoFalta -= um_Segundo
-} 
-
-    return{
-
-        anosFalta,
-        mesesFalta,
-        diasFalta,
-        horasFalta,
-        minutosFalta,
-        segundosFalta
+    let monthsLeft = 0
+    while (timeLeft > ONE_MONTH) {
+        monthsLeft++
+        timeLeft -= ONE_MONTH
     }
 
-
-
-
-} 
-
-function textBuilder(tempoRestante){
-    let resutl = []
-
-    if(tempoRestante.anosFalta > 0){
-        if (tempoRestante.anosFalta > 1){
-            result.push(`${anosFalta} anos `)
-        }
-    }
-        else {
-            result.push(`${anosFalta} ano`)
+    let daysLeft = 0
+    while (timeLeft > ONE_DAY) {
+        daysLeft++
+        timeLeft -= ONE_DAY
     }
 
-    if(tempoRestante.mesesFalta > 0){
-        if (tempoRestante.mesesFalta > 1){
-            result.push(`${mesesFalta} meses `)
-        }
-    }
-        else {
-            result.push(`${mesesFalta} mês`)
+    let hoursLeft = 0
+    while (timeLeft > ONE_HOUR) {
+        hoursLeft++
+        timeLeft -= ONE_HOUR
     }
 
-    if(tempoRestante.diasFalta > 0){
-        if (tempoRestante.diasFalta > 1){
-            result.push(`${diasFalta} dias `)
-        }
-    }
-        else {
-            result.push(`${diasFalta} dia`)
+    let minutesLeft = 0
+    while (timeLeft > ONE_MINUTE) {
+        minutesLeft++
+        timeLeft -= ONE_MINUTE
     }
 
-    if(tempoRestante.horasFalta > 0){
-        if (tempoRestante.horasFalta > 1){
-            result.push(`${horasFalta} horas `)
-        }
-    }
-        else {
-            result.push(`${horasFalta} hora`)
+    let secondsLeft = 0
+    while (timeLeft > ONE_SECOND) {
+        secondsLeft++
+        timeLeft -= ONE_SECOND
     }
 
-    if(tempoRestante.minutosFalta > 0){
-        if (tempoRestante.minutosFalta > 1){
-            result.push(`${minutosFalta} minutos `)
-        }
-    }
-        else {
-            result.push(`${minutosFalta} minuto`)
-    }
-
-    if(tempoRestante.segundosFalta > 0){
-        if (tempoRestante.segundosFalta > 1){
-            result.push(`${segundosFalta} segundos `)
-        }
-    }
-        else {
-            result.push(`${segundosFalta} segundo`)
-    }
-
+    return [
+        yearsLeft,
+        monthsLeft,
+        daysLeft,
+        hoursLeft,
+        minutesLeft,
+        secondsLeft
+    ]
 }
 
-const dataReferencial = new Date("2028", "01", "01").getTime()
-const DatadeHoje = new Date().getTime()
+function textBuilder(years, months, days, hours, minutes, seconds) {
+    let result =[]
+    if (years){
+        result.push(`${years} ${years > 1 ? "anos" : "ano" }  `)
+    }
+    if (months){
+        result.push(`${months} ${months > 1 ? "meses" : "mês" }  `)
+    }
+    if (days){
+        result.push(`${days} ${days > 1 ? "dias" : "dia" }  `)
+    }
+    if (hours){
+        result.push(`${hours} ${hours > 1 ? "horas" : "hora" }  `)
+    }
+    if (minutes){
+        result.push(`${minutes} ${minutes > 1 ? "minutos" : "minuto" }  `)
+    }
+    if (seconds){
+        result.push(`${seconds} ${seconds > 1 ? "segundos" : "segundo" }  `)
+    }
+    if (!result){
+        return "COMPLETED"
+    }
 
-let resultado = calculateRemainingTime(dataReferencial, DatadeHoje)
+    return result.join(", ")
+}
 
-console.log(resultado)
+function onInputChange() {
+    const [year, month, day] = input.value.split("-");
+    const referenceDate = new Date(year, month - 1, day).getTime();
+    const todayDate = new Date().getTime();
+
+    let remainingTime = calculateRemainingTime(referenceDate, todayDate)
+    text = textBuilder(...remainingTime)
+    output.textContent = text
+}
+
+input.addEventListener("change", onInputChange);
